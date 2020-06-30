@@ -12,13 +12,13 @@ router.post('/register',(req,res) => {
     res.send('register');
 });
 
-router.get('test', async (req,res) => {
+router.get('/test', async (req,res) => {
     let sql = 'select * from user';
     let ret = await db.operateData(sql,null);
     res.json({
         status: 0,
         data: ret
     });
-})
+});
 
 module.exports = router
