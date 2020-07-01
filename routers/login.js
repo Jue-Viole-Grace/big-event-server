@@ -1,6 +1,8 @@
 //统一管理路由信息
 const express = require('express');
 const path = require('path');
+//导入密码加密包
+const utils = require('utility');
 const db = require(path.join(__dirname,'../common/self-operateData-Promise'));
 const router = express.Router();
 
@@ -13,6 +15,8 @@ router.post('/login',(req,res) => {
 router.post('/register',async (req,res) => {
     //获取前端传递过来的参数
     let param = req.body;
+    //对客户端传递过来的密码加密后进行数据库的插入
+    param.password = utils.md5(req.body.password);
     //调用数据库相关的sql语句
     let sql = 'insert into user set ?';
     //ret为数据库操作的结果，如果操作成功则是一个对象
