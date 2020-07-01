@@ -4,6 +4,7 @@ const path = require('path');
 const db = require(path.join(__dirname,'../common/self-operateData-Promise'));
 const router = express.Router();
 
+//用户登录接口
 router.post('/login',(req,res) => {
     res.send('login');
 });
@@ -14,6 +15,7 @@ router.post('/register',async (req,res) => {
     let param = req.body;
     //调用数据库相关的sql语句
     let sql = 'insert into user set ?';
+    //ret为数据库操作的结果，如果操作成功则是一个对象
     let ret = await db.operateData(sql,param);
     if(ret && ret.affectedRows > 0){
         res.json({
@@ -28,6 +30,7 @@ router.post('/register',async (req,res) => {
     };
 });
 
+//测试接口
 router.get('/test', async (req,res) => {
     let sql = 'select * from user';
     let ret = await db.operateData(sql,null);
