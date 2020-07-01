@@ -11,19 +11,19 @@ router.get('userinfo', (req,res) => {
 
 //更新用户信息------------------------------------------------------------
 router.post('userinfo', (req,res) => {
-    res.send('userinfo');
+    res.send('update userinfo');
 });
 
 //更新用户密码------------------------------------------------------------
 router.post('updatepwd', (req,res) => {
-    res.send('userinfo');
+    res.send('pwd');
 });
 
 //更新用户头像------------------------------------------------------------
 router.post('update/avatar', (req,res) => {
-    res.send('userinfo');
+    res.send('pic');
 });
 
 
 
-module.exports = router;
+module.exports = router
