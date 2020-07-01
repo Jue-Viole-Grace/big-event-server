@@ -1,14 +1,29 @@
 //统一管理路由信息
 const express = require('express');
+const path = require('path');
+const db = require(path.join(__dirname,'../common/self-operateData-Promise'));
 const router = express.Router();
 
 //路由配置
 
 //使用postman测试接口时需要在header里携带 Authorization: token
 //获取用户信息接口--------------------------------------------------------
-router.get('/userinfo', (req,res) => {
-    // console.log(req.user);
-    res.send('userinfo');
+router.get('/userinfo', async (req,res) => {
+    let param = req.user;
+    let sql = 'select id,username,nickname,email,user_pic from user where id = ?';
+    let ret = await db.operateData(sql,param.id);
+    if(ret && ret.length > 0){
+        res.json({
+            status: 0,
+            message: '获取信息成功',
+            data: ret[0]
+        });
+    }else{
+        res.json({
+            status: 1,
+            message: '获取信息失败'
+        });
+    };
 });
 
 //更新用户信息------------------------------------------------------------
