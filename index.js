@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const loginRouter = require(path.join(__dirname,'routers/login.js'));
+const userRouter = require(path.join(__dirname,'routers/user.js'));
 //2.创建服务器
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(cors());
 
 //设置路由
 app.use('/api',loginRouter);
+app.use('/my',userRouter);
 
 //3.开启服务器
 app.listen(8888,() => {
