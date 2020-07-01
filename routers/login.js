@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path');
 //导入密码加密包
 const utils = require('utility');
+//导入token
+const jwt = require('jsonwebtoken');
 const db = require(path.join(__dirname,'../common/self-operateData-Promise'));
 const router = express.Router();
 
@@ -17,9 +19,22 @@ router.post('/login',async (req,res) => {
     let ret = await db.operateData(sql,[param.username, param.password]);
     //查询操作ret是数组,增删改操作ret是对象
     if(ret && ret.length > 0){
+        //如果登录验证通过，则生成一个token
+        /*jwt.sign方法
+        参数1：添加到token中的参数信息
+        参数2：加密唯一标识(干扰字符串)
+        参数3：加密配置选项(可以设置token的有效期)
+        */
+        let token = jwt.sign({
+            username: param.username,
+            id: ret[0].id
+        },'big-event',{expiresIn: '1h'});
+        //token前面要加一个'Bearer '
         res.json({
             status: 0,
-            message: '登录成功'
+            message: '登录成功',
+            // 基于JWT (JSON Web Token)进行权限认证
+            token: 'Bearer ' + token
         });
     }else{
         res.json({
