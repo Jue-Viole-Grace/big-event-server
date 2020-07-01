@@ -17,9 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 //解决跨域
 app.use(cors());
 
-//通过中间件统一处理token
+//通过中间件统一处理(反解)token
 //unless排除一些不需要token解析的路径
-//app.use(jwt({secret: 'big-event'}).unless({path:['/api/login','/api/register']}));
+app.use(jwt({secret: 'big-event'}).unless({path:/^\/api/}));
 
 //设置路由
 app.use('/api',loginRouter);

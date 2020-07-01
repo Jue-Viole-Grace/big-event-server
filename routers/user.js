@@ -4,8 +4,10 @@ const router = express.Router();
 
 //路由配置
 
+//使用postman测试接口时需要在header里携带 Authorization: token
 //获取用户信息接口--------------------------------------------------------
 router.get('/userinfo', (req,res) => {
+    // console.log(req.user);
     res.send('userinfo');
 });
 
