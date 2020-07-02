@@ -27,6 +27,15 @@ app.use('/api',loginRouter);
 app.use('/my',userRouter);
 app.use('/my/article',cateRouter);
 
+//统一处理不存在的路由
+//app.all表示处理所有形式的请求
+app.all('*', (req,res) => {
+    res.status(404).json({
+        status: 404,
+        message: '请求的资源不存在'
+    });
+});
+
 //异常信息处理中间件
 app.use((err,req,res,next) => {
     if(err.status === 401){
