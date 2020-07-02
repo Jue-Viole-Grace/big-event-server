@@ -77,9 +77,23 @@ router.post('/updatecate', async (req,res) => {
     };
 });
 
-//
+//根据id查询分类-----------------------------------------------------------
 router.get('/cates/:id', async (req,res) => {
-    res.send('delete');
+    let id = req.params.id;
+    let sql = 'select * from category where id = ?';
+    let ret = await db.operateData(sql,id);
+    if(ret && ret.length > 0){
+        res.json({
+            status: 0,
+            message: '获取分类成功',
+            data: ret[0]
+        });
+    }else{
+        res.json({
+            status: 1,
+            message: '获取分类失败'
+        });
+    };
 });
 
 
