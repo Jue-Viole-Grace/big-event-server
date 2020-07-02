@@ -9,7 +9,23 @@ router.get('/list', async (req,res) => {
     let param = req.query;
     param.pagenum = parseInt(param.pagenum);
     param.pagesize = parseInt(param.pagesize);
+    //动态拼接查询条件
+    //param = {pagenum: 1,pagesize: 1,cate_id: 1,state: '草稿'}
+    let condition = '';
+    for(let key in param){
+        if(key === 'cate_id' && param[key]){
+            condition += key + '=' + param[key] + ' and ';
+        }else if(key === 'state' && param[key]){
+            condition += key + '= "' + param[key] + '" and';
+        };
+    };
+    //去掉最后一个and
+    condition = condition.substring(0,condition.lastIndexOf('and'));1
+
     let sql = 'select * from article limit ?, ?';
+    if(condition){
+        sql = 'select * from article where '+ condition +' limit ?, ?';
+    };
     let ret = await db.operateData(sql,[param.pagesize*(param.pagenum-1),param.pagesize]);
     if(ret && ret.length > 0){
         res.json({
