@@ -1,4 +1,5 @@
-//统一管理路由信息
+//用户 /my 相关接口
+
 const express = require('express');
 const path = require('path');
 const utils = require('utility');
