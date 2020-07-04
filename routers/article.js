@@ -1,6 +1,8 @@
 //文章管理接口
 const express = require('express');
 const path = require('path');
+const multer = require('multer');
+const upload = multer({dest: __dirname + '../uploads'});
 const db = require(path.join(__dirname,'../common/self-operateData-Promise'));
 const router = express.Router();
 
@@ -65,15 +67,16 @@ router.get('/delete/:id', async (req,res) => {
 });
 
 //发表文章------------------------------------------------------------------
-router.post('/add', async (req,res) => {
+router.post('/add', upload.single('cover_img'), async (req,res) => {
     let param = req.body;
     let id = req.user.id;
+    let filePath = '/uploads/' + req.file.filename;
     let sql = 'insert into article set ?';
     let ret = await db.operateData(sql,{
         title: param.title,
         cate_id: param.cate_id,
         content: param.content,
-        cover_img: param.cover_img,
+        cover_img: filePath,
         state: param.state,
         pub_date: new Date(),
         author_id: id 
