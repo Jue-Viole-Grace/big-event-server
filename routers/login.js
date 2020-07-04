@@ -30,7 +30,7 @@ router.post('/login',async (req,res) => {
         let token = jwt.sign({
             username: param.username,
             id: ret[0].id
-        },'big-event',{expiresIn: '1h'});
+        },'big-event',{expiresIn: '2h'});
         //token前面要加一个'Bearer '
         res.json({
             status: 0,

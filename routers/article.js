@@ -67,6 +67,28 @@ router.get('/delete/:id', async (req,res) => {
 //发表文章------------------------------------------------------------------
 router.post('/add', async (req,res) => {
     let param = req.body;
+    let id = req.user.id;
+    let sql = 'insert into article set ?';
+    let ret = await db.operateData(sql,{
+        title: param.title,
+        cate_id: param.cate_id,
+        content: param.content,
+        cover_img: param.cover_img,
+        state: param.state,
+        pub_date: new Date(),
+        author_id: id 
+    });
+    if(ret && ret.affectedRows > 0){
+        res.json({
+            status: 0,
+            message: '发表成功'
+        });
+    }else{
+        res.json({
+            status: 1,
+            message: '发表失败'
+        });
+    };
 });
 
 //根据id查询文章-----------------------------------------------------------
@@ -91,6 +113,25 @@ router.get('/:id', async (req,res) => {
 //更新文章-----------------------------------------------------------------
 router.post('/edit', async (req,res) => {
     let param = req.body;
+    let sql = 'update article set ? where id = ?';
+    let ret = await db.operateData(sql,[{
+        title: param.title,
+        cate_id: param.cate_id,
+        content: param.content,
+        cover_img: param.cover_img,
+        state: param.state 
+    },param.id]);
+    if(ret && ret.affectedRows > 0){
+        res.json({
+            status: 0,
+            message: '更新成功'
+        });
+    }else{
+        res.json({
+            status: 1,
+            message: '更新失败'
+        });
+    };
 });
 
 
