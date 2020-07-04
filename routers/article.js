@@ -23,15 +23,19 @@ router.get('/list', async (req,res) => {
     condition = condition.substring(0,condition.lastIndexOf('and'));1
 
     let sql = 'select * from article limit ?, ?';
+    let totalSql = 'select count(*) as total from article';
     if(condition){
         sql = 'select * from article where '+ condition +' limit ?, ?';
+        totalSql = 'select count(*) as total from article where ' + condition;
     };
     let ret = await db.operateData(sql,[param.pagesize*(param.pagenum-1),param.pagesize]);
+    let countRet = await db.operateData(totalSql);
     if(ret && ret.length > 0){
         res.json({
             status: 0,
             message: '获取文章列表成功',
-            data: ret
+            data: ret,
+            total: countRet[0].total
         });
     }else{
         res.json({
